@@ -13,8 +13,10 @@ import static org.hamcrest.CoreMatchers.anything;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import androidx.test.filters.LargeTest;
 
 import org.junit.Rule;
@@ -74,6 +76,31 @@ public class MainActivityTest {
 
         onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click()); //Check the content on the list - no content in this case
         Espresso.pressBack(); //Back button
+    }
+
+    @Test
+    public void testIntentOpenAndBack(){
+        Intents.init();
+        onView(withId(R.id.button_add)).perform(click()); //Click add button to add a city to the list
+        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton")); //Type a city name
+        onView(withId(R.id.button_confirm)).perform(click()); //Confirm the city name and add to the list
+
+        onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).
+                check(matches((withText("Edmonton"))));
+
+        //performing click on listview at index 0
+        onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click());
+
+        //checking if the xml file of Show Activity is plotted in the view
+        Intents.intended(hasComponent(ShowActivity.class.getName()));
+       // onView(withId(R.id.show_activity_layout)).check(matches(isDisplayed()));
+        // checking if the right data is plotted
+        onView(withId(R.id.show_activity_city_name)).check(matches(withText("Edmonton")));
+        // performing back click
+        onView(withId(R.id.show_activity_back)).perform(click());
+
+        onView(withId(R.id.main_activity_layout)).check(matches(isDisplayed()));
+
     }
 
 }

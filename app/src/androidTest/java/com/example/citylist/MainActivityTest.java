@@ -33,7 +33,7 @@ public class MainActivityTest {
 
     @Test
     public void testAppName() {
-        onView(withText("CityList")).check(matches(isDisplayed())); //Check the name on the screen
+        onView(withText("CityList")).check(matches(isDisplayed())); //Check the name on screen
     }
 
     @Test
@@ -41,7 +41,7 @@ public class MainActivityTest {
         onView(withId(R.id.button_add)).perform(click()); //Click add button to add a city to the list
         onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton")); //Type a city name
         onView(withId(R.id.button_confirm)).perform(click()); //Confirm the city name and add to the list
-        onView(withText("Edmonton")).check(matches(isDisplayed())); //Check the name on the screen
+        onView(withText("Edmonton")).check(matches(isDisplayed())); //Check the name on screen
     }
 
     @Test
@@ -65,7 +65,7 @@ public class MainActivityTest {
         onView(withId(R.id.button_confirm)).perform(click()); //Confirm the city name and add to the list
 
         onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).
-                check(matches((withText("Edmonton")))); //Check the content on the list - no content in this case
+                check(matches((withText("Edmonton")))); 
     }
 
     @Test
@@ -74,7 +74,7 @@ public class MainActivityTest {
         onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton")); //Type a city name
         onView(withId(R.id.button_confirm)).perform(click()); //Confirm the city name and add to the list
 
-        onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click()); //Check the content on the list - no content in this case
+        onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click()); 
         Espresso.pressBack(); //Back button
     }
 
@@ -88,16 +88,15 @@ public class MainActivityTest {
         onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).
                 check(matches((withText("Edmonton"))));
 
-        //performing click on listview at index 0
-        onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click());
+       
+        onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click()); //performing click on the list at index 0
 
-        //checking if the xml file of Show Activity is plotted in the view
-        Intents.intended(hasComponent(ShowActivity.class.getName()));
-       // onView(withId(R.id.show_activity_layout)).check(matches(isDisplayed()));
+        
+        Intents.intended(hasComponent(ShowActivity.class.getName()));//checking if the Show Activity is plotted in the view
         // checking if the right data is plotted
         onView(withId(R.id.show_activity_city_name)).check(matches(withText("Edmonton")));
-        // performing back click
-        onView(withId(R.id.show_activity_back)).perform(click());
+        
+        onView(withId(R.id.show_activity_back)).perform(click()); //back click
 
         onView(withId(R.id.main_activity_layout)).check(matches(isDisplayed()));
 
